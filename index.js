@@ -10,14 +10,17 @@ app.set("views",path.join(__dirname,"views"));
 app.use(express.static(path.join(__dirname,"public")));
 const posts=[
     {
+        id:"1a",
         username:"bob",
         content:"hey there bob is here.."
     },
     {
+        id:"2b",
         username:"stephen",
         content:"hey there today is my first job day"
     },
     {
+        id:"3c",
         username:"rajesh",
         content:"am resigning from my job"
     }
@@ -29,10 +32,17 @@ app.get("/posts",(req,res)=>{
 app.get("/posts/new",(req,res)=>{
     res.render("new.ejs");
 });
+app.get("/posts/:id",(req,res)=>{
+    let {id} = req.params;
+    let post= posts.find((p)=> id === p.id);
+    // console.log(post);
+    // res.send("request working properly...");
+    res.render("show.ejs",{post});
+});
 app.post("/posts",(req,res)=>{
     const{username,content}=req.body;
     posts.push({username , content});
-    res.send("post request working..")
+    res.redirect("/posts");
 })
 
 app.listen(port,()=>{
